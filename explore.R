@@ -12,4 +12,4 @@ biz <- yelp_base[yelp_base$type == "business",]
 
 harvard = biz[biz$neighborhoods == "Harvard Square",]
 
-
+plot(biz$review_count, biz$stars)
