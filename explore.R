@@ -8,8 +8,19 @@ yelp_base <- stream_in(file("data/yelp_academic_dataset.json"))
 
 biz <- yelp_base[yelp_base$type == "business",]
 
-# harvard_mit <- biz[biz$state == "MA",]
+harvard = biz[biz$state == "MA" & biz$schools != "University of Massachusetts - Amherst",]
 
-harvard = biz[biz$neighborhoods == "Harvard Square",]
+plot(harvard$review_count, harvard$stars)
 
-plot(biz$review_count, biz$stars)
+
+# adding distance from Harvard Square T stop
+# these values found by using google maps
+harv_lat = 42.373467
+harv_long = -71.118972
+harvard$distance = sqrt((harv_lat - harvard$latitude)^2 + (harv_long - harvard$longitude)^2)
+
+harv_square = harvard[harvard$neighborhoods == "Harvard Square",]
+
+# ordered by distance
+plot(harv_square$distance, harv_square$review_count)
+plot(harv_square$review_count, harv_square$stars)
