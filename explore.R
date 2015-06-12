@@ -20,7 +20,7 @@ harvard$distance = sqrt((harv_lat - harvard$latitude)^2 + (harv_long - harvard$l
 
 harv_square = harvard[harvard$neighborhoods == "Harvard Square",]
 
-# ordered by distance
+# some exploratoriy plots
 plot(harv_square$distance, harv_square$review_count)
 plot(harv_square$review_count, harv_square$stars)
 plot(harv_square$distance, harv_square$review_count)
