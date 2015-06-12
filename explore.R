@@ -7,10 +7,13 @@ library(jsonlite)
 yelp_base <- stream_in(file("data/yelp_academic_dataset.json"))
 
 biz <- yelp_base[yelp_base$type == "business",]
+usr <- yelp_base[yelp_base$type == "user",]
+rev <- yelp_base[yelp_base$type == "review",]
 
 
 # let's look at Harvard/Harvard Square first
-harvard = biz[biz$state == "MA" & biz$schools != "University of Massachusetts - Amherst",]
+harvard = biz[biz$state == "MA" &
+              biz$schools != "University of Massachusetts - Amherst",]
 
 # adding distance from Harvard Square T stop
 # these values found by using google maps
@@ -26,7 +29,6 @@ rest = function(cell) {
       boo = TRUE
     }
   }
-  print(boo)
   boo
 }
 
@@ -47,5 +49,17 @@ plot(hsq_rest$distance, hsq_rest$review_count)
 plot(hsq_rest$review_count, hsq_rest$stars)
 
 
-write(toJSON(harv_square), "hsq_rest.json")
+write(prettify(toJSON(harv_square)), "hsq_rest.json")
+
+# exploring different cuisines
+cats <- c("Restaurants")
+for (cell in hsq_rest$categories) {
+  for (category in cell) {
+    print(category %in% cats)
+    if ((category %in% cats) == FALSE) {
+      cats <- c(cats, category)
+    }
+  }
+}
+
 
