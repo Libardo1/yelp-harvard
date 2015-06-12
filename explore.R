@@ -18,12 +18,34 @@ harv_lat = 42.373467
 harv_long = -71.118972
 harvard$distance = sqrt((harv_lat - harvard$latitude)^2 + (harv_long - harvard$longitude)^2)
 
+# find restaurants
+rest = function(cell) {
+  boo = FALSE
+  for(elem in cell[[1]]) {
+    if (elem == "Restaurants") {
+      boo = TRUE
+    }
+  }
+  print(boo)
+  boo
+}
+
+harvard$restaurant = FALSE
+for (row in 1:nrow(harvard)) {
+  harvard[row,]$restaurant = rest(harvard[row,]$categories)
+}
+
+
 harv_square = harvard[harvard$neighborhoods == "Harvard Square",]
+hsq_rest = harv_square[harv_square$restaurant == TRUE,]
 
 # some exploratoriy plots
 plot(harv_square$distance, harv_square$review_count)
 plot(harv_square$review_count, harv_square$stars)
-plot(harv_square$distance, harv_square$review_count)
 
-write(toJSON(harv_square), "harv_square.json")
+plot(hsq_rest$distance, hsq_rest$review_count)
+plot(hsq_rest$review_count, hsq_rest$stars)
+
+
+write(toJSON(harv_square), "hsq_rest.json")
 
